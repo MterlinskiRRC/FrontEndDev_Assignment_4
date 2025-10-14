@@ -4,63 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assignment 4 form</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; line-height: 1.6; }
-        
-        fieldset { border: 1px solid #007bff; border-radius: 8px; margin-bottom: 20px; padding: 10px 20px 20px 20px; background-color: #fff; }
-        legend { font-weight: bold; font-size: 1.2em; color: #007bff; padding: 0 10px; }
-        
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; color: #333; }
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group input[type="date"],
-        .form-group input[type="number"],
-        .form-group textarea,
-        .form-group select {
-            width: 98%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; 
-        }
-        
-        .error-message { 
-            color: #dc3545; 
-            font-size: 0.9em; 
-            margin-top: 5px;
-            display: block; 
-        }
-        
-        .input-group label { font-weight: normal; margin-right: 15px; display: inline-block; }
-        .input-group input[type="radio"], .input-group input[type="checkbox"] { margin-right: 5px; }
-        
-
-        .submit-btn { 
-            background-color: #28a745; 
-            color: white; 
-            padding: 12px 20px; 
-            border: none; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-size: 16px; 
-            width: 100%;
-            margin-top: 10px;
-        }
-        .submit-btn:hover { background-color: #1e7e34; }
-        
-        @media (max-width: 600px) {
-            body { padding: 10px; }
-            fieldset { padding: 10px; }
-            .form-group input[type="text"],
-            .form-group input[type="email"],
-            .form-group input[type="date"],
-            .form-group input[type="number"],
-            .form-group textarea,
-            .form-group select {
-                width: 100%;
-            }
-        }
-    </style>
+        <link rel="stylesheet" href="styles.css"> 
 </head>
 <body>
 
+    <h1>User Registration and Survey Form</h1>
+    <form action="https://httpbin.org/post" method="post">
+        
+        <fieldset>
+            <legend>1. Basic Information</legend>
+            
+            <div class="form-group">
+                <label for="userName">User Name:</label>
+                <input type="text" id="userName" name="userName" required>
+                <span class="error-message" id="error-userName"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="userEmail">Email Address:</label>
+                <input type="email" id="userEmail" name="userEmail" required>
+                <span class="error-message" id="error-userEmail"></span>
+            </div>
+            
+        </fieldset>
+        
+        <fieldset>
+            <legend>2. Preferences & Location</legend>
+            
+            <div class="form-group">
+                <label>Preferred Contact Method (Radio Buttons):</label>
+                <div class="input-group">
+                    <input type="radio" id="contactEmail" name="contactMethod" value="email" required>
+                    <label for="contactEmail">Email</label>
+                    
+                    <input type="radio" id="contactPhone" name="contactMethod" value="phone">
+                    <label for="contactPhone">Phone</label>
+                </div>
+                <span class="error-message" id="error-contactMethod"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Select Your Interests (Checkboxes):</label>
+                <div class="input-group">
+                    <input type="checkbox" id="interestTech" name="interests[]" value="technology">
+                    <label for="interestTech">Technology</label>
+                    
+                    <input type="checkbox" id="interestArt" name="interests[]" value="art">
+                    <label for="interestArt">Art</label>
+                    
+                    <input type="checkbox" id="interestSport" name="interests[]" value="sports">
+                    <label for="interestSport">Sports</label>
+                </div>
+                 <span class="error-message" id="error-interests"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="country">Select Your Country (Dropdown Menu):</label>
+                <select id="country" name="country" required>
+                    <option value="" disabled selected>-- Please choose a country --</option>
+                    <option value="usa">United States</option>
+                    <option value="can">Canada</option>
+                    <option value="mex">Mexico</option>
+                </select>
+                <span class="error-message" id="error-country"></span>
+            </div>
+
+        </fieldset>
+        
+        <fieldset>
+            <legend>3. Custom Validation</legend>
+            
+            <div class="form-group">
+                <label for="usernameRegex">Username (Alphanumeric only):</label>
+                <input type="text" id="usernameRegex" name="usernameRegex" 
+                       pattern="^[a-zA-Z0-9]+$" 
+                       title="Username must contain only letters and numbers (no spaces)." 
+                       required>
+                <small>*(Letters and numbers only)</small>
+                <span class="error-message" id="error-usernameRegex"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="customDate">Date of Birth (DD-MM-YYYY):</label>
+                <input type="text" id="customDate" name="customDate" 
+                       pattern="^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$" 
+                       title="Date format must be DD-MM-YYYY (e.g., 31-12-2024)" 
+                       placeholder="DD-MM-YYYY"
+                       required>
+                <small>*(Format: DD-MM-YYYY)</small>
+                <span class="error-message" id="error-customDate"></span>
+            </div>
+
+        </fieldset>
+        
+        <fieldset>
+            <legend>4. Project Details</legend>
+            
+            <div class="form-group">
+                <label for="startDate">Project Start Date:</label>
+                <input type="date" id="startDate" name="startDate" required>
+                <span class="error-message" id="error-startDate"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="experienceYears">Years of Experience:</label>
+                <input type="number" id="experienceYears" name="experienceYears" min="0" max="50" step="1" required>
+                <span class="error-message" id="error-experienceYears"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="comments">Comments/Feedback:</label>
+                <textarea id="comments" name="comments" rows="4"></textarea>
+                <span class="error-message" id="error-comments"></span>
+            </div>
+        </fieldset>
+
+        <button type="submit" class="submit-btn">Submit and Test</button>
+        
+    </form>
 
 </body>
 </html>
