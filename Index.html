@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assignment 4 form</title>
-        <link rel="stylesheet" href="styles.css"> 
+    <title>Styled, Accessible & Validated Form</title>
+    
+    <link rel="stylesheet" href="styles.css"> 
 </head>
 <body>
 
     <h1>User Registration and Survey Form</h1>
-    <form action="https://httpbin.org/post" method="post">
+    <form action="https://httpbin.org/post" method="post" id="registrationForm" novalidate>
         
         <fieldset>
             <legend>1. Basic Information</legend>
@@ -32,7 +33,7 @@
             <legend>2. Preferences & Location</legend>
             
             <div class="form-group">
-                <label>Preferred Contact Method (Radio Buttons):</label>
+                <label>Preferred Contact Method:</label>
                 <div class="input-group">
                     <input type="radio" id="contactEmail" name="contactMethod" value="email" required>
                     <label for="contactEmail">Email</label>
@@ -44,7 +45,7 @@
             </div>
 
             <div class="form-group">
-                <label>Select Your Interests (Checkboxes):</label>
+                <label>Select Your Interests:</label>
                 <div class="input-group">
                     <input type="checkbox" id="interestTech" name="interests[]" value="technology">
                     <label for="interestTech">Technology</label>
@@ -55,11 +56,11 @@
                     <input type="checkbox" id="interestSport" name="interests[]" value="sports">
                     <label for="interestSport">Sports</label>
                 </div>
-                 <span class="error-message" id="error-interests"></span>
+                <span class="error-message" id="error-interests"></span>
             </div>
 
             <div class="form-group">
-                <label for="country">Select Your Country (Dropdown Menu):</label>
+                <label for="country">Select Your Country:</label>
                 <select id="country" name="country" required>
                     <option value="" disabled selected>-- Please choose a country --</option>
                     <option value="usa">United States</option>
@@ -78,7 +79,7 @@
                 <label for="usernameRegex">Username (Alphanumeric only):</label>
                 <input type="text" id="usernameRegex" name="usernameRegex" 
                        pattern="^[a-zA-Z0-9]+$" 
-                       title="Username must contain only letters and numbers (no spaces)." 
+                       title="Username must contain only letters and numbers." 
                        required>
                 <small>*(Letters and numbers only)</small>
                 <span class="error-message" id="error-usernameRegex"></span>
@@ -122,6 +123,5 @@
         <button type="submit" class="submit-btn">Submit and Test</button>
         
     </form>
-
 </body>
 </html>

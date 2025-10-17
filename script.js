@@ -1,161 +1,116 @@
+/**
+ * script.js
+ * Handles client-side form validation and custom error message display.
+ */
 
-:root {
-    --primary-color: #007bff;     /* Blue: For accents, borders, and buttons */
-    --secondary-color: #28a745;   /* Green: For the submit button */
-    --background-light: #f8f9fa;  /* Very light grey for main background */
-    --background-white: #ffffff;  /* White for form fields/groups */
-    --text-dark: #343a40;         /* Dark grey for high contrast/readability */
-    --error-color: #dc3545;       /* Red for error messages */
-    --focus-color: #49b5ff;       /* Lighter blue for focus/hover borders */
-    --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('registrationForm');
+    
+    form.setAttribute('novalidate', true); 
 
-
-body {
-    font-family: var(--font-stack);
-    background-color: var(--background-light);
-    color: var(--text-dark);
-    padding: 20px;
-    line-height: 1.6;
-    margin: 0;
-}
-
-h1 {
-    color: var(--primary-color);
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 2em;
-}
-
-
-form {
-    max-width: 800px;
-    margin: 0 auto;
-
-}
-
-fieldset {
-
-    border: 2px solid var(--primary-color);
-    border-radius: 10px;
-    margin-bottom: 30px;
-    padding: 15px 25px 25px 25px;
-    background-color: var(--background-white);
-
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-}
-
-legend {
-    font-weight: 600;
-    font-size: 1.3em;
-    color: var(--primary-color);
-    padding: 0 15px;
-    background-color: var(--background-white);
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 5px;
-    font-size: 1.05em; 
-
-}
-
-.form-group input:not([type="radio"]):not([type="checkbox"]),
-.form-group textarea,
-.form-group select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ced4da; 
-    border-radius: 6px;
-    box-sizing: border-box; 
-    transition: border-color 0.3s, box-shadow 0.3s; 
-    font-size: 1em;
-}
-
-.form-group input:hover,
-.form-group select:hover,
-.form-group textarea:hover {
-    border-color: #a3aab0;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    border-color: var(--focus-color);
-    outline: none; 
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); 
-}
-
-::placeholder {
-    color: #adb5bd;
-    opacity: 1; 
-}
-
-
-.input-group label {
-    font-weight: normal;
-    margin-right: 20px;
-    display: inline-block;
-    cursor: pointer;
-}
-
-small {
-    color: #6c757d;
-    display: block;
-    margin-top: 5px;
-    font-size: 0.9em;
-}
-
-.error-message { 
-    color: var(--error-color); 
-    font-size: 0.9em; 
-    margin-top: 5px;
-    font-weight: bold;
-    display: block; 
-}
-
-.submit-btn { 
-    background-color: var(--secondary-color); 
-    color: white; 
-    padding: 15px 25px; 
-    border: none; 
-    border-radius: 6px; 
-    cursor: pointer; 
-    font-size: 1.1em; 
-    width: 100%;
-    margin-top: 10px;
-    transition: background-color 0.3s;
-}
-
-.submit-btn:hover, .submit-btn:focus { 
-    background-color: #1e7e34;
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
-}
-
-
-@media (max-width: 650px) {
-    body { 
-        padding: 10px; 
+    function showCustomError(input, message) {
+        const errorSpan = document.getElementById(`error-${input.id}`);
+        if (errorSpan) {
+            errorSpan.textContent = message;
+            input.classList.add('input-error');
+        }
     }
-    form {
-        max-width: 100%;
+
+    // Helper function to clear a specific error message
+    function clearError(input) {
+        const errorSpan = document.getElementById(`error-${input.id}`);
+        if (errorSpan) {
+            errorSpan.textContent = '';
+            input.classList.remove('input-error');
+        }
     }
-    fieldset { 
-        padding: 10px; 
-        margin-bottom: 15px;
-        border-radius: 8px;
+
+    // --- Validation Logic Function ---
+    function validateInput(input) {
+        clearError(input);
+
+        if (input.validity.valueMissing) {
+            showCustomError(input, 'This field is required.');
+            return false;
+        }
+
+        if (input.type === 'email' && input.validity.typeMismatch) {
+            showCustomError(input, 'Entered value needs to be an email address.');
+            return false;
+        }
+
+        if (input.hasAttribute('pattern') && input.validity.patternMismatch) {
+            showCustomError(input, input.title || 'Please match the required format.');
+            return false;
+        }
+
+        if (input.type === 'number') {
+            if (input.validity.rangeUnderflow) {
+                showCustomError(input, `Value must be at least ${input.min}.`);
+                return false;
+            }
+            if (input.validity.rangeOverflow) {
+                showCustomError(input, `Value must be no more than ${input.max}.`);
+                return false;
+            }
+        }
+        
+        if (input.tagName === 'SELECT' && input.value === '') {
+             showCustomError(input, 'Please select an option from the list.');
+             return false;
+        }
+
+        return true;
     }
-    legend {
-        font-size: 1.1em;
-    }
-    .input-group label {
-        margin-bottom: 8px;
-        display: block; 
-    }
-}
+
+    // --- Event Listeners for Real-Time Validation ---
+    
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('blur', () => {
+
+            if (input.type === 'radio' || input.type === 'checkbox') return;
+            validateInput(input);
+        });
+        
+        // Clear errors on input
+        input.addEventListener('input', () => {
+            if (input.validity.valid) {
+                clearError(input);
+            }
+        });
+    });
+
+    // --- Form Submission Handler ---
+    
+    form.addEventListener('submit', (event) => {
+        let formIsValid = true;
+        
+        // 1. Validate all inputs
+        inputs.forEach(input => {
+            if (input.type !== 'radio' && input.type !== 'checkbox') {
+                if (!validateInput(input)) {
+                    formIsValid = false;
+                }
+            }
+        });
+
+        const contactRadio = form.elements['contactMethod'];
+        const contactError = document.getElementById('error-contactMethod');
+        if (contactRadio && !contactRadio.value) {
+            contactError.textContent = 'Please select a preferred contact method.';
+            formIsValid = false;
+        } else if (contactError) {
+            contactError.textContent = '';
+        }
+        
+        // 3. Final Check and Submission Block
+        if (!formIsValid) {
+            event.preventDefault(); 
+            alert('Please correct the highlighted errors before submitting.');
+        } else {
+            alert('Form is valid! Submitting data...');
+        }
+    });
+
+});
