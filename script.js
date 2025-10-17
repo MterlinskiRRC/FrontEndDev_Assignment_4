@@ -104,12 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             contactError.textContent = '';
         }
         
-        // 3. Final Check and Submission Block
-        if (!formIsValid) {
-            event.preventDefault(); 
-            alert('Please correct the highlighted errors before submitting.');
-        } else {
-            alert('Form is valid! Submitting data...');
+
         }
     });
 
